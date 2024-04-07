@@ -1,5 +1,5 @@
 from utils import csvhandler
-from models import steam_app_list, steam_news
+from models import steam_app_list, steam_news, steam_appreviews
 import concurrent.futures
 
 def fetch_and_write(func, file_name):
@@ -11,7 +11,8 @@ def fetch_and_write(func, file_name):
 def main():
     all_fetch_functions = [
         (steam_app_list.get_app_list_data_items, 'steam_app_list.csv'),
-        (steam_news.get_steam_news_data_items, 'steam_news_data.csv')
+        (steam_news.get_steam_news_data_items, 'steam_news_data.csv'),
+        (steam_appreviews.get_reviews_data_items, 'steam_review_data.csv')
     ]
     
     with concurrent.futures.ThreadPoolExecutor() as executor:
