@@ -4,23 +4,23 @@ import concurrent.futures
 
 MAIN_KEY = 'steam_appreviews'
 
-def fetch_reviews(appid, cursor=None):
-        url = f"{config.get_api_url(MAIN_KEY)}{appid}"
-        params = config.get_api_params(MAIN_KEY)
+def fetch_steam_reviews(appid, cursor=None):
+    url = f"{config.get_api_url(MAIN_KEY)}{appid}"
+    params = config.get_api_params(MAIN_KEY)
         
-        if cursor:
-            params['cursor'] = cursor.encode()
+    if cursor:
+        params['cursor'] = cursor.encode()
             
-        response = requesthandler.make_api_request(url, params)
+    response = requesthandler.make_api_request(url, params)
 
-        return response
+    return response
 
-def fetch_all_reviews(appid):
+def fetch_all_steam_reviews(appid):
     all_reviews = []
     cursor = "*"  # Initial cursor value
 
     while True:
-        response = fetch_reviews(appid, cursor=cursor)
+        response = fetch_steam_reviews(appid, cursor=cursor)
 
         if not response or response.get("success") != 1:
             break
@@ -37,9 +37,9 @@ def fetch_all_reviews(appid):
 
     return all_reviews
 
-def get_reviews_data(appid):
+def get_steam_reviews_data(appid):
     columns = config.get_api_columns(MAIN_KEY)
-    all_reviews_json = fetch_all_reviews(appid)
+    all_reviews_json = fetch_all_steam_reviews(appid)
     base_review_data = {key: None for key in columns}
     review_data_items = []
 
@@ -59,7 +59,7 @@ def get_reviews_data(appid):
 
     return review_data_items
 
-def get_reviews_data_items():
+def get_steam_reviews_data_items():
     appids = config.get_target_appids()
     review_data_items = []
     
@@ -67,7 +67,7 @@ def get_reviews_data_items():
         futures = []
 
         for appid in appids:
-            future = executor.submit(get_reviews_data, appid)
+            future = executor.submit(get_steam_reviews_data, appid)
             futures.append(future)
 
         for future in concurrent.futures.as_completed(futures):

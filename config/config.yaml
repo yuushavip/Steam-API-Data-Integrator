@@ -30,6 +30,24 @@ steam_news:
     count: 2000
     feeds:
 
+steam_appreviews_summary:
+  api_url: http://store.steampowered.com/appreviews/
+  columns:
+    - num_reviews
+    - review_score
+    - review_score_desc
+    - total_positive
+    - total_negative
+    - total_reviews
+  params:
+    json: 1
+    filter: recent
+    language: all
+    review_type: all
+    purchase_type: all
+    num_per_page: 100
+    filter_offtopic_activity: 0
+
 steam_appreviews:
   api_url: http://store.steampowered.com/appreviews/
   columns:
