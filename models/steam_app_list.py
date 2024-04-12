@@ -1,10 +1,9 @@
-from utils import requesthandler
-from config import config
+from utils import requesthandler, confighandler
 
 MAIN_KEY = 'steam_app_list'
 
 def fetch_app_list():
-    api_url = config.get_api_url(MAIN_KEY)
+    api_url = confighandler.get_api_url(MAIN_KEY)
     response = requesthandler.make_api_request(api_url, None)
     fetch_data_items = []
     
@@ -19,7 +18,7 @@ def get_app_list_data_items():
     fetch_data_items = fetch_app_list()
     
     if fetch_data_items:
-        columns = config.get_api_columns(MAIN_KEY)
+        columns = confighandler.get_api_columns(MAIN_KEY)
         base_app_data = {key: None for key in columns}
         app_list_data_items = []
                 

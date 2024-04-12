@@ -1,13 +1,12 @@
-from config import config
-from utils import requesthandler
+from utils import requesthandler, confighandler
 import concurrent.futures
 import time
 
 MAIN_KEY = 'steam_appreviews_summary'
 
 def fetch_steam_reviews_summary(appid):
-    url = f"{config.get_api_url(MAIN_KEY)}{appid}"
-    params = config.get_api_params(MAIN_KEY)
+    url = f"{confighandler.get_api_url(MAIN_KEY)}{appid}"
+    params = confighandler.get_api_params(MAIN_KEY)
     response = requesthandler.make_api_request(url, params)
 
     return response['query_summary']
@@ -17,7 +16,7 @@ def get_steam_reviews_summary_data(appid):
     reviews_summary_data_items = []
     
     if fetch_data_items:
-        columns = config.get_api_columns(MAIN_KEY)
+        columns = confighandler.get_api_columns(MAIN_KEY)
         base_reviews_summary_data = {key: None for key in columns}
         current_timestamp = int(time.time())
         
@@ -33,7 +32,7 @@ def get_steam_reviews_summary_data(appid):
     return reviews_summary_data_items
 
 def get_steam_reviews_summary_data_items():
-    appids = config.get_target_appids()
+    appids = confighandler.get_target_appids()
     reviews_summary_data_items = []
     
     with concurrent.futures.ThreadPoolExecutor() as executor:

@@ -1,12 +1,11 @@
-from config import config
-from utils import requesthandler
+from utils import requesthandler, confighandler
 import concurrent.futures
 
 MAIN_KEY = 'steam_news'
 
 def fetch_steam_news(appid):
-    url = config.get_api_url(MAIN_KEY)
-    params = config.get_api_params(MAIN_KEY)
+    url = confighandler.get_api_url(MAIN_KEY)
+    params = confighandler.get_api_params(MAIN_KEY)
     params['appid'] = appid
     response = requesthandler.make_api_request(url, params)  
     fetch_data_items = []
@@ -23,7 +22,7 @@ def get_steam_news_data(appid):
     news_data_items = []
     
     if fetch_data_items:
-        columns = config.get_api_columns(MAIN_KEY)
+        columns = confighandler.get_api_columns(MAIN_KEY)
         base_news_data = {key: None for key in columns} 
         
         for item in fetch_data_items:
@@ -37,7 +36,7 @@ def get_steam_news_data(appid):
     return news_data_items
 
 def get_steam_news_data_items():
-    appids = config.get_target_appids()
+    appids = confighandler.get_target_appids()
     news_data_items = []
     
     with concurrent.futures.ThreadPoolExecutor() as executor:
